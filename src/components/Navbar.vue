@@ -22,7 +22,7 @@
           <span
             :class="[
               'absolute left-0 w-6 h-0.5 bg-blue-200',
-              isMenuOpen ? 'opacity-0 ' : 'top-3 opacity-100',
+              isMenuOpen ? 'opacity-0' : 'top-3 opacity-100',
             ]"
           ></span>
           <span
@@ -34,15 +34,54 @@
         </div>
       </button>
     </div>
+    <nav
+      class="fixed inset-0 md:relative flex  items-center justify-center bg-[#111827] md:flex md:bg-transparent"
+      :class="isMenuOpen ? 'block' : 'hidden'"
+    >
+      <ul
+        class="flex flex-col items-center md:flex-row space-y-5 md:space-y-0 md:space-x-5"
+      >
+        <li v-for="item in Menu" class="relative">
+          <a
+            :href="item.href"
+            class="relative block text-blue-100 hover:text-blue-400 transition-all duration-300 text-xl md:text-base font-medium group"
+            @click="scrollIntoSection(item.href)"
+          >
+            {{ item.name }}
+            <span
+              class="absolute left-0 ease-out -translate-x-1 group-hover:translate-x-0 bottom-0 w-0 bg-blue-400 group-hover:w-full h-0.5 transition-all duration-300"
+            ></span>
+          </a>
+        </li>
+      </ul>
+      <div class="mt-8 md:mt-0 md:ml-8">
+        <button class="px-6 py-2 bg-blue-400 text-white rounded-full bg-linear-to-r from-blue-500  to-cyan-500  hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 cursor-pointer hover:scale-105">
+          Lets Talk
+        </button>
+      </div>
+    </nav>
   </header>
 </template>
 
 <script setup>
 import { ref, watch } from "vue";
 const isMenuOpen = ref(false);
-watch(isMenuOpen, (newVal, oldVal) => {
-  console.log("Count changed:", oldVal, "→", newVal);
-});
+console.log(isMenuOpen.value);
+const Menu = ref([
+  { name: "Services", href: "#services" },
+  { name: "About Me", href: "#about" },
+  { name: "Skills", href: "#skills" },
+  { name: "Services", href: "#services" },
+  { name: "Services", href: "#services" },
+]);
+
+const scrollIntoSection = (id) => {
+  isMenuOpen.value = false; // Close the menu when a link is clicked
+  const section = document.getElementById(id);
+  if (section) {
+    section.scrollIntoView({ behavior: "smooth" });
+  }
+};
 </script>
 
 <style lang="scss" scoped></style>
